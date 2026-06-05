@@ -1,36 +1,53 @@
-# RAG LangGraph React Application
+# SANDYLLM - Production Vertex AI RAG
 
-This project is a full-stack RAG (Retrieval-Augmented Generation) application using LangGraph, Groq, FAISS, and React.
+This is a production-ready RAG (Retrieval-Augmented Generation) application using **Google Vertex AI (Gemini 1.5 Pro)** and **Google OAuth**.
 
-## Project Structure
+## 🚀 Key Upgrades
+- **Authentication**: Fully integrated Google OAuth 2.0. Users are isolated based on their email.
+- **Embeddings**: `text-embedding-004` (Vertex AI).
+- **LLM**: `gemini-1.5-pro` (Vertex AI).
+- **Architecture**: Modular structure for scalability and maintainability.
+- **User Isolation**: Private vector stores and chat histories per user.
 
-- `backend/`: FastAPI application.
-  - `main.py`: Main API logic, LangGraph workflow, and PDF indexing.
-  - `requirements.txt`: Python dependencies.
-- `frontend/`: React application (Vite + TypeScript).
-  - `src/App.tsx`: Chat interface.
-  - `src/App.css`: Styles.
+## 📁 Structure
+- `/backend/auth`: OAuth login, callback, and session management.
+- `/backend/rag`: Gemini orchestration and API endpoints.
+- `/backend/vectorstore`: User-isolated FAISS indices.
+- `/backend/main.py`: FastAPI entry point.
 
-## How to Run
+## 🛠️ Setup
 
-### Backend
-1. Ensure your `.env` file has the `GROQ_API_KEY`.
-2. Use the existing virtual environment:
-   ```bash
-   ./ragg/bin/python backend/main.py
-   ```
-   The backend will start at `http://localhost:8000`.
+### 1. Google Cloud Configuration
+- Enable **Vertex AI API** in your GCP Console.
+- Create **OAuth 2.0 Client ID** (Web application).
+- Download `client_secret.json` and place it in the project root.
+- Add `http://localhost:8000/auth/callback` to the **Authorized redirect URIs**.
 
-### Frontend
-1. Navigate to the frontend directory:
-   ```bash
-   cd frontend
-   npm install
-   npm run dev
-   ```
-   The frontend will start at `http://localhost:5173`.
+### 2. Environment Variables (`.env`)
+Ensure your `.env` contains:
+```env
+GCP_PROJECT_ID=your-project-id
+GCP_LOCATION=us-central1
+SESSION_SECRET_KEY=a-random-string-for-sessions
+# GROQ_API_KEY is no longer required
+```
 
-## Features
-- **Document Indexing**: Automatically indexes `ra.pdf` and `AI_Report_1000plus_Words.pdf` on startup.
-- **Agentic RAG**: Uses LangGraph to manage the conversation flow and tool usage.
-- **Streaming-like UI**: Simple and responsive chat interface.
+### 3. Running the Backend
+```bash
+cd backend
+pip install -r requirements.txt
+python main.py
+```
+
+### 4. Running the Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+## 🧪 Flow
+1. Visit `http://localhost:8000/auth/login` to authenticate.
+2. After callback, you will be redirected to the React UI.
+3. Upload PDFs in the UI (they will be processed with Vertex AI and stored in your private index).
+4. Chat with SANDYLLM about your private sources.
