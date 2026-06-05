@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+langchain
+langchain-groq
+langchain-community
+langchain-huggingface
+langgraph
+python-dotenv
+faiss-cpu
+pypdf
+pydantic
+pydantic-settings
+sentence-transformers
+transformers
+torch
